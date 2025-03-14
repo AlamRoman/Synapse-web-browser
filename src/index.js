@@ -10,8 +10,9 @@ function createWindow() {
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
-            webviewTag: true,
-        }
+            webviewTag: true
+        },
+        icon: path.join(__dirname, "..", "resources", "logo.png"), 
     });
 
     //hide toolbar

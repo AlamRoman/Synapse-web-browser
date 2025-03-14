@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
+.active_tab{
+    background-color: #a3a3a3;
+}
+
+webview {
+    display: none;
+}
+
+webview.active {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+}
