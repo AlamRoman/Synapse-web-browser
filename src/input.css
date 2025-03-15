@@ -15,6 +15,14 @@ body {
     background-color: #bbbbbb;
 }
 
+.custom_button{
+    background-color: #bbbbbb;
+}
+
+.custom_button:hover{
+    background-color: #afafaf;
+}
+
 webview {
     display: none;
 }

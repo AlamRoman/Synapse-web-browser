@@ -23,16 +23,16 @@
 
     <div id="top-bar" class="bg-gray-300 flex items-center gap-2 px-2 py-1 w-full">
 
-        <button id="back-button" class="px-2 py-auto h-8 text-gray-700 rounded cursor-pointer disabled:opacity-50 hover:scale-110 disabled:scale-100 transition duration-200">
+        <button id="back-button" class="px-2 py-auto h-8 text-gray-700 rounded cursor-pointer disabled:opacity-50 hover:scale-110 disabled:scale-100 transition duration-200" disabled>
             <i class="fa-solid fa-arrow-left"></i>
         </button>
-        <button id="forward-button" class="px-2 py-auto h-8 text-gray-700 rounded cursor-pointer disabled:opacity-50 hover:scale-110 disabled:scale-100 transition duration-200">
+        <button id="forward-button" class="px-2 py-auto h-8 text-gray-700 rounded cursor-pointer disabled:opacity-50 hover:scale-110 disabled:scale-100 transition duration-200" disabled>
             <i class="fa-solid fa-arrow-right"></i>
         </button>
 
         <input id="url-input" type="text" placeholder="Enter URL or search" class="p-2 flex-grow h-8 border text-black bg-gray-100 w-100 rounded-full">
 
-        <button id="go-button" class="px-3 mr-32 h-8 bg-gray-400 hover:bg-gray-500 text-white rounded-full transition duration-200">Search</button>          
+        <button id="go-button" class="px-3 mr-32 h-8 custom_button rounded-full transition duration-200">Search</button>          
     </div>
     
     <div id="web-container" class="flex-1 w-full h-full"></div>
@@ -117,9 +117,7 @@
             const activeWebview = document.getElementById(webviewId);
             urlInput.value = activeWebview.src;
 
-            activeWebview.addEventListener('dom-ready', () => {
-                updateButtons(activeWebview);
-            });
+            updateButtons(activeWebview);
         }
 
         function closeTab(tabId, webviewId) {
@@ -136,12 +134,22 @@
 
         //update nav buttons state
         function updateButtons(webview) {
+            console.log(webview);
             if (!webview || !document.body.contains(webview)) return;
 
-            webview.addEventListener('dom-ready', () => {
+            try {//try updating the buttons
+
                 backButton.disabled = !webview.canGoBack();
                 forwardButton.disabled = !webview.canGoForward();
-            });
+                
+            } catch (error) {//if there is an error wait for dom-ready
+
+                webview.addEventListener('dom-ready', () => {
+                    backButton.disabled = !webview.canGoBack();
+                    forwardButton.disabled = !webview.canGoForward();
+                });
+                
+            }
         }
 
         function updateActiveTabTitle(){
