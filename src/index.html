@@ -57,9 +57,9 @@
             const webviewId = `webview-${tabCount}`;
 
             const tab = document.createElement('div');
-            tab.classList.add('px-4', 'bg-gray-300', 'rounded-full', 'ml-2', 'cursor-pointer', "w-40", "min-w-15", "h-7", 'flex', 'justify-between', 'items-center');
+            tab.classList.add('px-4', 'bg-gray-300', 'rounded-full', 'ml-2', "w-40", "min-w-15", "h-7", 'flex', 'justify-between', 'items-center');
             tab.id = tabId;
-            tab.innerHTML = `<span id="tab_title" class="text-gray-800 truncate ...">New Tab</span> <span class="close-tab py-auto text-gray-700 font-bold hover:scale-110 transition duration-200"><i class="fa-solid fa-xmark"></i></span>`;
+            tab.innerHTML = `<span id="tab_title" class="text-gray-800 hover:cursor-default truncate ...">New Tab</span> <span class="close-tab py-auto text-gray-700 cursor-pointer font-bold hover:scale-110 transition duration-200"><i class="fa-solid fa-xmark"></i></span>`;
             tabList.appendChild(tab);
 
             const webview = document.createElement('webview');
