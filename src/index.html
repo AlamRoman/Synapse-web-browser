@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Synapse</title>
 
-    <link rel="stylesheet" href="output.css" />
+    <link rel="stylesheet" href="../dist/output.css" />
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
@@ -16,23 +16,23 @@
 
     <div id="tab-bar" class="flex bg-gray-200 px-2 py-1">
 
-        <button id="new-tab" class="bg-gray-400 text-xl w-7 h-7 font-bold hover:bg-gray-500 text-white rounded-full">+</button>
+        <button id="new-tab" class="w-7 h-7 cursor-pointer text-gray-700 rounded-full hover:scale-110 transition duration-200"><i class="fa-solid fa-plus"></i></button>
 
         <div id="tab-list" class="flex overflow-x-auto"></div>
     </div>    
 
     <div id="top-bar" class="bg-gray-300 flex items-center gap-2 px-2 py-1 w-full">
 
-        <button id="back-button" class="px-2 py-auto h-8 rounded disabled:opacity-50">
+        <button id="back-button" class="px-2 py-auto h-8 text-gray-700 rounded cursor-pointer disabled:opacity-50 hover:scale-110 disabled:scale-100 transition duration-200">
             <i class="fa-solid fa-arrow-left"></i>
         </button>
-        <button id="forward-button" class="px-2 py-auto h-8 rounded disabled:opacity-50">
+        <button id="forward-button" class="px-2 py-auto h-8 text-gray-700 rounded cursor-pointer disabled:opacity-50 hover:scale-110 disabled:scale-100 transition duration-200">
             <i class="fa-solid fa-arrow-right"></i>
         </button>
 
-        <input id="url-input" type="text" placeholder="Enter URL or search" class="p-2 h-8 border text-black bg-gray-100 w-100 rounded-full">
+        <input id="url-input" type="text" placeholder="Enter URL or search" class="p-2 flex-grow h-8 border text-black bg-gray-100 w-100 rounded-full">
 
-        <button id="go-button" class="px-2 h-8 text-gray-800 bg-gray-400 rounded-full">Search</button>
+        <button id="go-button" class="px-3 mr-32 h-8 bg-gray-400 hover:bg-gray-500 text-white rounded-full transition duration-200">Search</button>          
     </div>
     
     <div id="web-container" class="flex-1 w-full h-full"></div>
@@ -59,7 +59,7 @@
             const tab = document.createElement('div');
             tab.classList.add('px-4', 'bg-gray-300', 'rounded-full', 'ml-2', 'cursor-pointer', "w-40", "min-w-15", "h-7", 'flex', 'justify-between', 'items-center');
             tab.id = tabId;
-            tab.innerHTML = `<span>Tab ${tabCount}</span> <span class="close-tab text-gray-800 text-xl font-bold">x</span>`;
+            tab.innerHTML = `<span id="tab_title" class="text-gray-800 truncate ...">New Tab</span> <span class="close-tab py-auto text-gray-700 font-bold hover:scale-110 transition duration-200"><i class="fa-solid fa-xmark"></i></span>`;
             tabList.appendChild(tab);
 
             const webview = document.createElement('webview');
@@ -85,8 +85,17 @@
 
             // update nav buttons
             webview.addEventListener('dom-ready', () => {
-                webview.addEventListener('did-navigate', () => updateButtons(webview));
-                webview.addEventListener('did-navigate-in-page', () => updateButtons(webview));
+
+                webview.addEventListener('did-navigate', () => {
+                    updateButtons(webview);
+                    updateActiveTabTitle();
+                });
+
+                webview.addEventListener('did-navigate-in-page', () => {
+                    updateButtons(webview);
+                    updateActiveTabTitle();
+                });
+
                 updateButtons(webview);
             });
         }
@@ -107,7 +116,10 @@
             // Update URL input and navigation buttons
             const activeWebview = document.getElementById(webviewId);
             urlInput.value = activeWebview.src;
-            updateButtons(activeWebview);
+
+            activeWebview.addEventListener('dom-ready', () => {
+                updateButtons(activeWebview);
+            });
         }
 
         function closeTab(tabId, webviewId) {
@@ -122,6 +134,7 @@
             }
         }
 
+        //update nav buttons state
         function updateButtons(webview) {
             if (!webview || !document.body.contains(webview)) return;
 
@@ -129,6 +142,20 @@
                 backButton.disabled = !webview.canGoBack();
                 forwardButton.disabled = !webview.canGoForward();
             });
+        }
+
+        function updateActiveTabTitle(){
+            const activeWebview = document.querySelector('webview.active');
+            const activeTab = document.getElementsByClassName('active_tab')[0];
+            const activeTabTitle = activeTab.querySelector('#tab_title');   
+
+            //update the title of the tab
+            activeTabTitle.innerText = activeWebview.getTitle();
+
+            console.log(activeWebview.src);
+
+            //update the url input
+            urlInput.value = activeWebview.src;
         }
 
         // Navigation buttons
@@ -156,6 +183,8 @@
 
                 input = searchUrl;
             }
+
+            //goto link
             activeWebview.src = input;
         });
 
@@ -168,6 +197,7 @@
             }
         }
 
+        //new tab button
         newTabButton.addEventListener('click', () => createTab());
 
         //first tab
