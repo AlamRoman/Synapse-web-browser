@@ -16,12 +16,12 @@
 
     <div id="tab-bar" class="flex bg-gray-200 px-2 py-1">
 
-        <button id="new-tab" class="w-7 h-7 cursor-pointer text-gray-700 rounded-full hover:scale-110 transition duration-200"><i class="fa-solid fa-plus"></i></button>
+        <button id="new-tab" class="w-7 h-7 cursor-pointer text-gray-700 rounded-full hover:scale-110 hover:bg-gray-300 transition duration-200"><i class="fa-solid fa-plus"></i></button>
 
         <div id="tab-list" class="flex overflow-x-auto"></div>
     </div>    
 
-    <div id="top-bar" class="bg-gray-300 flex items-center gap-2 px-2 py-1 w-full">
+    <div id="nav-bar" class="bg-gray-300 flex items-center gap-2 px-2 py-1 w-full">
 
         <button id="back-button" class="px-2 py-auto h-8 text-gray-700 rounded cursor-pointer disabled:opacity-50 hover:scale-110 disabled:scale-100 transition duration-200" disabled>
             <i class="fa-solid fa-arrow-left"></i>
@@ -30,9 +30,13 @@
             <i class="fa-solid fa-arrow-right"></i>
         </button>
 
-        <input id="url-input" type="text" placeholder="Enter URL or search" class="p-2 flex-grow h-8 border text-black bg-gray-100 w-100 rounded-full">
+        <input id="url-input" type="text" placeholder="Enter URL or search" 
+            class="p-2 flex-grow h-8 border text-black bg-gray-100 w-100 rounded-full focus:ring-2 focus:ring-purple-700 
+            focus:border-purple-700 focus:outline focus:outline-purple-700">
 
-        <button id="go-button" class="px-3 mr-32 h-8 custom_button rounded-full transition duration-200">Search</button>          
+        <button id="go-button" class="px-3 mr-32 h-8 custom_button rounded-full focus:ring-2
+            focus:ring-purple-700 focus:border-purple-700 focus:outline focus:outline-purple-700 transition 
+            duration-200">Search</button>          
     </div>
     
     <div id="web-container" class="flex-1 w-full h-full"></div>
@@ -177,7 +181,16 @@
             if (activeWebview && activeWebview.canGoForward()) activeWebview.goForward();
         });
 
-        goButton.addEventListener('click', () => {
+        //search url
+        goButton.addEventListener('click', search);
+
+        urlInput.addEventListener("keydown", () => {
+            if (event.key === 'Enter') {
+                search();
+            }
+        });
+
+        function search() {
             const activeWebview = document.querySelector('webview.active');
             let input = urlInput.value.trim();
 
@@ -194,7 +207,7 @@
 
             //goto link
             activeWebview.src = input;
-        });
+        }
 
         function isValidURL(string) {
             try {

@@ -15,6 +15,8 @@ function createWindow() {
         icon: path.join(__dirname, "..", "resources", "logo.png"), 
     });
 
+    mainWindow.maximize();
+
     //hide toolbar
     mainWindow.setMenuBarVisibility(false);
 
