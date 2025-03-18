@@ -1,5 +1,7 @@
 # Synapse web browser
 
+![Synapse Browser Logo](./resources/icon.png)
+
 **Synapse Browser** is a simple web browser built using **Electron.js**. It provides essential browsing features such as tab management, navigation, and search functionality. Designed with a minimal interface, Synapse allows users to browse the web efficiently with a clean, easy-to-use layout.
 
 While it's still a work in progress, Synapse offers a lightweight browsing experience with basic functionality to manage tabs and navigate the web.
