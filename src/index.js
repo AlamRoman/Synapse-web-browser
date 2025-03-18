@@ -12,7 +12,7 @@ function createWindow() {
             contextIsolation: false,
             webviewTag: true
         },
-        icon: path.join(__dirname, "..", "resources", "logo.png"), 
+        icon: path.join(__dirname, "..", "resources", "icon.png"), 
     });
 
     mainWindow.maximize();
