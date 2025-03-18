@@ -75,6 +75,3 @@ This will launch the Synapse browser.
 
 ## License
 Distributed under the MIT License. See `LICENSE` for more information.
-
-## Acknowledgements
-- **FontAwesome**: For the icons used in the navigation bar and tab management.
