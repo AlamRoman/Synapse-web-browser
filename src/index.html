@@ -16,7 +16,8 @@
 
     <div id="tab-bar" class="flex bg-gray-200 px-2 py-1">
 
-        <button id="new-tab" class="w-7 h-7 cursor-pointer text-gray-700 rounded-full hover:scale-110 hover:bg-gray-300 transition duration-200"><i class="fa-solid fa-plus"></i></button>
+        <button id="new-tab" class="w-7 h-7 cursor-pointer text-gray-700 rounded-full hover:scale-110 hover:bg-gray-300 focus:ring-2
+        focus:ring-purple-700 focus:border-purple-700 focus:outline focus:outline-purple-700 transition duration-200"><i class="fa-solid fa-plus"></i></button>
 
         <div id="tab-list" class="flex overflow-x-auto"></div>
     </div>    
@@ -90,14 +91,18 @@
             // update nav buttons
             webview.addEventListener('dom-ready', () => {
 
-                webview.addEventListener('did-navigate', () => {
+                webview.addEventListener('did-navigate', (event) => {
                     updateButtons(webview);
                     updateActiveTabTitle();
+
+                    urlInput.value = event.url;
                 });
 
-                webview.addEventListener('did-navigate-in-page', () => {
+                webview.addEventListener('did-navigate-in-page', (event) => {
                     updateButtons(webview);
                     updateActiveTabTitle();
+
+                    urlInput.value = event.url;
                 });
 
                 updateButtons(webview);
@@ -165,7 +170,7 @@
             //update the title of the tab
             activeTabTitle.innerText = activeWebview.getTitle();
 
-            console.log(activeWebview.src);
+            //console.log(activeWebview.src);
 
             //update the url input
             urlInput.value = activeWebview.src;
@@ -208,6 +213,8 @@
 
             //goto link
             activeWebview.src = input;
+
+            updateActiveTabTitle();
         }
 
         function isValidURL(string) {
@@ -218,7 +225,6 @@
                 return false;
             }
         }
-
 
         //new tab button
         newTabButton.addEventListener('click', () => createTab());
